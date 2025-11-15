@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Elemental Battle Arena</title>
     <style>
     * {
@@ -15,6 +16,11 @@
     box-sizing: border-box;
     }
 
+    html {
+    height: 100%;
+    height: -webkit-fill-available;
+    }
+
     body {
     margin: 0;
     padding: 0;
@@ -22,6 +28,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     font-family: 'Arial', sans-serif;
     overflow: hidden;
@@ -30,6 +37,7 @@
     #gameContainer {
     width: 100vw;
     height: 100vh;
+    height: -webkit-fill-available;
     max-width: 900px;
     max-height: 700px;
     background: #fff;
@@ -51,25 +59,26 @@
 
     #battleField {
     width: 100%;
-    height: 35vh;
+    flex: 1;
     background: linear-gradient(to bottom, #87ceeb 0%, #98d8c8 100%);
     position: relative;
     border-bottom: 4px solid #333;
-    flex-shrink: 0;
+    min-height: 200px;
+    max-height: 45vh;
     }
 
     @media (min-width: 768px) {
     #battleField {
-    height: 60vh;
-    flex: 1;
+    min-height: 250px;
+    max-height: none;
     }
     }
 
     .character {
     position: absolute;
     bottom: 10px;
-    width: 80px;
-    height: 110px;
+    width: 100px;
+    height: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,15 +113,15 @@
     }
 
     .character-sprite {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
-    margin-bottom: 5px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    font-size: 35px;
+    margin-bottom: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     @media (min-width: 768px) {
@@ -133,10 +142,10 @@
     }
 
     .health-bar-container {
-    width: 80px;
-    height: 12px;
+    width: 100px;
+    height: 14px;
     background: #333;
-    border-radius: 6px;
+    border-radius: 7px;
     overflow: hidden;
     border: 2px solid #fff;
     }
@@ -158,9 +167,9 @@
     .health-text {
     color: #fff;
     font-weight: bold;
-    margin-top: 2px;
-    font-size: 9px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    margin-top: 3px;
+    font-size: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     @media (min-width: 768px) {
@@ -172,8 +181,8 @@
 
     .energy-display {
     display: flex;
-    gap: 3px;
-    margin-top: 3px;
+    gap: 4px;
+    margin-top: 4px;
     }
 
     @media (min-width: 768px) {
@@ -184,8 +193,8 @@
     }
 
     .energy-orb {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -195,7 +204,7 @@
     color: #fff;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     border: 2px solid #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     @media (min-width: 768px) {
@@ -219,15 +228,16 @@
     }
 
     #controlPanel {
-    flex: 1;
+    flex-shrink: 0;
     background: #2c3e50;
-    padding: 8px;
+    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    max-height: 55vh;
     }
 
     @media (min-width: 768px) {
@@ -241,14 +251,14 @@
     width: 100%;
     max-height: 50px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: rgba(0,0,0,0.3);
     border-radius: 6px;
-    padding: 5px;
-    margin-bottom: 5px;
+    padding: 6px;
+    margin-bottom: 6px;
     color: #fff;
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1.3;
-    -webkit-overflow-scrolling: touch;
     }
 
     @media (min-width: 768px) {
@@ -263,7 +273,7 @@
 
     .log-entry {
     margin-bottom: 2px;
-    padding: 1px 0;
+    padding: 2px 0;
     }
 
     @media (min-width: 768px) {
@@ -290,9 +300,9 @@
 
     #message {
     color: #fff;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     text-align: center;
     min-height: 20px;
     line-height: 1.2;
@@ -309,29 +319,32 @@
 
     .button-container {
     display: flex;
-    gap: 5px;
+    gap: 6px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 3px;
+    margin-top: 4px;
+    margin-bottom: 8px;
     }
 
     @media (min-width: 768px) {
     .button-container {
     gap: 10px;
+    margin-bottom: 0;
     }
     }
 
     .action-btn {
-    padding: 8px 12px;
-    font-size: 11px;
+    padding: 12px 12px;
+    font-size: 12px;
     font-weight: bold;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     color: #fff;
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
@@ -368,14 +381,14 @@
     }
 
     .element-btn {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border: none;
-    border-radius: 10px;
-    font-size: 26px;
+    border-radius: 12px;
+    font-size: 28px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -383,6 +396,7 @@
     color: #fff;
     font-weight: bold;
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
@@ -417,7 +431,7 @@
     }
 
     .element-label {
-    font-size: 8px;
+    font-size: 9px;
     margin-top: 2px;
     }
 
@@ -429,17 +443,18 @@
     }
 
     .level-btn {
-    padding: 7px 12px;
-    font-size: 10px;
+    padding: 10px 12px;
+    font-size: 11px;
     font-weight: bold;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     color: #fff;
-    min-width: 85px;
+    min-width: 90px;
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
@@ -474,14 +489,14 @@
 
     #score {
     position: absolute;
-    top: 5px;
+    top: 8px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0,0,0,0.7);
     color: #fff;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 6px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
     z-index: 10;
     }
@@ -497,7 +512,7 @@
 
     .attack-animation {
     position: absolute;
-    font-size: 35px;
+    font-size: 40px;
     animation: attack 1s ease-out;
     pointer-events: none;
     }
@@ -534,21 +549,24 @@
     }
 
     #restartBtn {
-    margin-top: 5px;
-    padding: 7px 20px;
-    font-size: 12px;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    padding: 10px 25px;
+    font-size: 13px;
     background: #27ae60;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     display: none;
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
     #restartBtn {
     margin-top: 10px;
+    margin-bottom: 0;
     padding: 10px 30px;
     font-size: 16px;
     }
@@ -577,11 +595,12 @@
     align-items: center;
     justify-content: center;
     color: #fff;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     #mainMenu h1 {
     font-size: 24px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     color: #f39c12;
     text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
     animation: titleGlow 2s infinite alternate;
@@ -604,7 +623,7 @@
     .menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
     }
 
     @media (min-width: 768px) {
@@ -614,17 +633,18 @@
     }
 
     .menu-btn {
-    padding: 12px 35px;
+    padding: 15px 40px;
     font-size: 16px;
     font-weight: bold;
     border: none;
-    border-radius: 12px;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.2s ease;
     color: #fff;
     min-width: 220px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
@@ -660,7 +680,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 15px;
+    padding: 15px 15px calc(15px + env(safe-area-inset-bottom));
+    padding-top: calc(15px + env(safe-area-inset-top));
     overflow-y: auto;
     color: #fff;
     -webkit-overflow-scrolling: touch;
@@ -673,7 +694,7 @@
     }
 
     #instructionsScreen h1 {
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 12px;
     color: #f39c12;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -743,18 +764,20 @@
     }
 
     .back-btn {
-    padding: 10px 25px;
-    font-size: 13px;
+    padding: 12px 30px;
+    font-size: 14px;
     font-weight: bold;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
     color: #fff;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     margin-top: 6px;
+    margin-bottom: 10px;
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
@@ -783,10 +806,11 @@
     align-items: center;
     justify-content: center;
     color: #fff;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     #difficultyScreen h2 {
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 20px;
     color: #e74c3c;
     }
@@ -813,8 +837,8 @@
     }
 
     .difficulty-btn {
-    padding: 10px 22px;
-    font-size: 14px;
+    padding: 12px 25px;
+    font-size: 15px;
     font-weight: bold;
     border: none;
     border-radius: 10px;
@@ -823,6 +847,7 @@
     color: #fff;
     min-width: 200px;
     touch-action: manipulation;
+    min-height: 44px;
     }
 
     @media (min-width: 768px) {
@@ -999,15 +1024,15 @@
     <div id="levelChoices" class="button-container hidden">
     <button class="level-btn level-1" id="level1Btn" data-level="1">
     <div id="level1Name">Level 1</div>
-    <div style="font-size: 9px;">20 DMG</div>
+    <div style="font-size: 10px;">20 DMG</div>
     </button>
     <button class="level-btn level-2" id="level2Btn" data-level="2">
     <div id="level2Name">Level 2</div>
-    <div style="font-size: 9px;">40 DMG</div>
+    <div style="font-size: 10px;">40 DMG</div>
     </button>
     <button class="level-btn level-3" id="level3Btn" data-level="3">
     <div id="level3Name">Level 3</div>
-    <div style="font-size: 9px;">60 DMG</div>
+    <div style="font-size: 10px;">60 DMG</div>
     </button>
     </div>
 
@@ -1746,11 +1771,11 @@
     attack.textContent = elementEmojis[element];
 
     if (isPlayer) {
-    attack.style.left = '100px';
+    attack.style.left = '150px';
     } else {
-    attack.style.right = '100px';
+    attack.style.right = '150px';
     }
-    attack.style.bottom = '80px';
+    attack.style.bottom = '100px';
 
     battleField.appendChild(attack);
 
