@@ -2,23 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Elemental Battle Arena</title>
     <style>
     * {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    box-sizing: border-box;
-    }
-
-    html {
-    height: 100%;
-    height: -webkit-fill-available;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
     }
 
     body {
@@ -28,7 +21,6 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    min-height: -webkit-fill-available;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     font-family: 'Arial', sans-serif;
     overflow: hidden;
@@ -37,7 +29,6 @@
     #gameContainer {
     width: 100vw;
     height: 100vh;
-    height: -webkit-fill-available;
     max-width: 900px;
     max-height: 700px;
     background: #fff;
@@ -50,11 +41,11 @@
     }
 
     @media (min-width: 768px) {
-    #gameContainer {
-    border-radius: 20px;
-    width: 90vw;
-    height: 90vh;
-    }
+        #gameContainer {
+            border-radius: 20px;
+            width: 90vw;
+            height: 90vh;
+        }
     }
 
     #battleField {
@@ -63,33 +54,25 @@
     background: linear-gradient(to bottom, #87ceeb 0%, #98d8c8 100%);
     position: relative;
     border-bottom: 4px solid #333;
-    min-height: 200px;
-    max-height: 45vh;
-    }
-
-    @media (min-width: 768px) {
-    #battleField {
     min-height: 250px;
-    max-height: none;
-    }
     }
 
     .character {
     position: absolute;
-    bottom: 10px;
-    width: 100px;
-    height: 140px;
+    bottom: 20px;
+    width: 120px;
+    height: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
     }
 
     @media (min-width: 768px) {
-    .character {
-    width: 150px;
-    height: 200px;
-    bottom: 50px;
-    }
+        .character {
+            width: 150px;
+            height: 200px;
+            bottom: 50px;
+        }
     }
 
     #opponent {
@@ -97,9 +80,9 @@
     }
 
     @media (min-width: 768px) {
-    #opponent {
-    right: 100px;
-    }
+        #opponent {
+            right: 100px;
+        }
     }
 
     #player {
@@ -107,30 +90,30 @@
     }
 
     @media (min-width: 768px) {
-    #player {
-    left: 100px;
-    }
+        #player {
+            left: 100px;
+        }
     }
 
     .character-sprite {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 35px;
-    margin-bottom: 6px;
+    font-size: 40px;
+    margin-bottom: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     @media (min-width: 768px) {
-    .character-sprite {
-    width: 120px;
-    height: 120px;
-    font-size: 60px;
-    margin-bottom: 10px;
-    }
+        .character-sprite {
+            width: 120px;
+            height: 120px;
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
     }
 
     #opponent .character-sprite {
@@ -142,20 +125,20 @@
     }
 
     .health-bar-container {
-    width: 100px;
-    height: 14px;
+    width: 120px;
+    height: 16px;
     background: #333;
-    border-radius: 7px;
+    border-radius: 8px;
     overflow: hidden;
     border: 2px solid #fff;
     }
 
     @media (min-width: 768px) {
-    .health-bar-container {
-    width: 150px;
-    height: 20px;
-    border-radius: 10px;
-    }
+        .health-bar-container {
+            width: 150px;
+            height: 20px;
+            border-radius: 10px;
+        }
     }
 
     .health-bar {
@@ -167,39 +150,39 @@
     .health-text {
     color: #fff;
     font-weight: bold;
-    margin-top: 3px;
-    font-size: 10px;
+    margin-top: 4px;
+    font-size: 11px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     @media (min-width: 768px) {
-    .health-text {
-    margin-top: 5px;
-    font-size: 14px;
-    }
+        .health-text {
+            margin-top: 5px;
+            font-size: 14px;
+        }
     }
 
     .energy-display {
     display: flex;
-    gap: 4px;
-    margin-top: 4px;
+    gap: 5px;
+    margin-top: 5px;
     }
 
     @media (min-width: 768px) {
-    .energy-display {
-    gap: 8px;
-    margin-top: 8px;
-    }
+        .energy-display {
+            gap: 8px;
+            margin-top: 8px;
+        }
     }
 
     .energy-orb {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: bold;
     color: #fff;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -208,11 +191,11 @@
     }
 
     @media (min-width: 768px) {
-    .energy-orb {
-    width: 40px;
-    height: 40px;
-    font-size: 12px;
-    }
+        .energy-orb {
+            width: 40px;
+            height: 40px;
+            font-size: 12px;
+        }
     }
 
     .fire-orb {
@@ -230,112 +213,108 @@
     #controlPanel {
     flex-shrink: 0;
     background: #2c3e50;
-    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    max-height: 55vh;
+    max-height: 50vh;
     }
 
     @media (min-width: 768px) {
-    #controlPanel {
-    padding: 20px;
-    max-height: 300px;
-    }
+        #controlPanel {
+            padding: 20px;
+            max-height: 300px;
+        }
     }
 
     #actionLog {
     width: 100%;
-    max-height: 50px;
+    max-height: 60px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     background: rgba(0,0,0,0.3);
-    border-radius: 6px;
-    padding: 6px;
-    margin-bottom: 6px;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
     color: #fff;
-    font-size: 10px;
-    line-height: 1.3;
+    font-size: 11px;
+    line-height: 1.4;
     }
 
     @media (min-width: 768px) {
-    #actionLog {
-    max-height: 80px;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    line-height: 1.6;
-    }
+        #actionLog {
+            max-height: 80px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
     }
 
     .log-entry {
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     padding: 2px 0;
     }
 
     @media (min-width: 768px) {
-    .log-entry {
-    margin-bottom: 5px;
-    padding: 3px 0;
-    }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
     }
 
     .log-round {
     font-weight: bold;
     color: #f39c12;
     border-top: 1px solid rgba(255,255,255,0.2);
-    padding-top: 2px;
-    margin-top: 2px;
+    padding-top: 3px;
+    margin-top: 3px;
     }
 
     @media (min-width: 768px) {
-    .log-round {
-    padding-top: 5px;
-    margin-top: 5px;
-    }
+        .log-round {
+            padding-top: 5px;
+            margin-top: 5px;
+        }
     }
 
     #message {
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     text-align: center;
-    min-height: 20px;
-    line-height: 1.2;
+    min-height: 25px;
+    line-height: 1.3;
     }
 
     @media (min-width: 768px) {
-    #message {
-    font-size: 16px;
-    margin-bottom: 10px;
-    min-height: 30px;
-    line-height: 1.4;
-    }
+        #message {
+            font-size: 16px;
+            margin-bottom: 10px;
+            min-height: 30px;
+            line-height: 1.4;
+        }
     }
 
     .button-container {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 4px;
-    margin-bottom: 8px;
+    margin-top: 5px;
     }
 
     @media (min-width: 768px) {
-    .button-container {
-    gap: 10px;
-    margin-bottom: 0;
-    }
+        .button-container {
+            gap: 10px;
+        }
     }
 
     .action-btn {
-    padding: 12px 12px;
-    font-size: 12px;
+    padding: 10px 15px;
+    font-size: 13px;
     font-weight: bold;
     border: none;
     border-radius: 10px;
@@ -344,15 +323,14 @@
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     color: #fff;
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    .action-btn {
-    padding: 12px 20px;
-    font-size: 16px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
+        .action-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
     }
 
     .action-btn:active:not(:disabled) {
@@ -385,7 +363,7 @@
     height: 70px;
     border: none;
     border-radius: 12px;
-    font-size: 28px;
+    font-size: 30px;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
@@ -396,17 +374,16 @@
     color: #fff;
     font-weight: bold;
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    .element-btn {
-    width: 90px;
-    height: 90px;
-    border-radius: 15px;
-    font-size: 40px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
+        .element-btn {
+            width: 90px;
+            height: 90px;
+            border-radius: 15px;
+            font-size: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
     }
 
     .element-btn:active:not(:disabled) {
@@ -432,19 +409,19 @@
 
     .element-label {
     font-size: 9px;
-    margin-top: 2px;
+    margin-top: 3px;
     }
 
     @media (min-width: 768px) {
-    .element-label {
-    font-size: 11px;
-    margin-top: 5px;
-    }
+        .element-label {
+            font-size: 11px;
+            margin-top: 5px;
+        }
     }
 
     .level-btn {
-    padding: 10px 12px;
-    font-size: 11px;
+    padding: 8px 15px;
+    font-size: 12px;
     font-weight: bold;
     border: none;
     border-radius: 10px;
@@ -452,18 +429,17 @@
     transition: all 0.2s ease;
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     color: #fff;
-    min-width: 90px;
+    min-width: 100px;
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    .level-btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    min-width: 130px;
-    }
+        .level-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            min-width: 130px;
+        }
     }
 
     .level-btn:active:not(:disabled) {
@@ -489,38 +465,38 @@
 
     #score {
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0,0,0,0.7);
     color: #fff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: bold;
     z-index: 10;
     }
 
     @media (min-width: 768px) {
-    #score {
-    top: 20px;
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-size: 20px;
-    }
+        #score {
+            top: 20px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
     }
 
     .attack-animation {
     position: absolute;
-    font-size: 40px;
+    font-size: 50px;
     animation: attack 1s ease-out;
     pointer-events: none;
     }
 
     @media (min-width: 768px) {
-    .attack-animation {
-    font-size: 80px;
-    }
+        .attack-animation {
+            font-size: 80px;
+        }
     }
 
     @keyframes attack {
@@ -549,10 +525,9 @@
     }
 
     #restartBtn {
-    margin-top: 6px;
-    margin-bottom: 8px;
-    padding: 10px 25px;
-    font-size: 13px;
+    margin-top: 8px;
+    padding: 8px 25px;
+    font-size: 14px;
     background: #27ae60;
     color: #fff;
     border: none;
@@ -560,16 +535,14 @@
     cursor: pointer;
     display: none;
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    #restartBtn {
-    margin-top: 10px;
-    margin-bottom: 0;
-    padding: 10px 30px;
-    font-size: 16px;
-    }
+        #restartBtn {
+            margin-top: 10px;
+            padding: 10px 30px;
+            font-size: 16px;
+        }
     }
 
     #restartBtn:active {
@@ -595,11 +568,10 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     #mainMenu h1 {
-    font-size: 24px;
+    font-size: 28px;
     margin-bottom: 30px;
     color: #f39c12;
     text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
@@ -609,10 +581,10 @@
     }
 
     @media (min-width: 768px) {
-    #mainMenu h1 {
-    font-size: 48px;
-    margin-bottom: 40px;
-    }
+        #mainMenu h1 {
+            font-size: 48px;
+            margin-bottom: 40px;
+        }
     }
 
     @keyframes titleGlow {
@@ -627,32 +599,31 @@
     }
 
     @media (min-width: 768px) {
-    .menu-buttons {
-    gap: 20px;
-    }
+        .menu-buttons {
+            gap: 20px;
+        }
     }
 
     .menu-btn {
     padding: 15px 40px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     border: none;
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.2s ease;
     color: #fff;
-    min-width: 220px;
+    min-width: 250px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    .menu-btn {
-    padding: 20px 60px;
-    font-size: 24px;
-    min-width: 300px;
-    }
+        .menu-btn {
+            padding: 20px 60px;
+            font-size: 24px;
+            min-width: 300px;
+        }
     }
 
     .menu-btn:active {
@@ -680,92 +651,91 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 15px 15px calc(15px + env(safe-area-inset-bottom));
-    padding-top: calc(15px + env(safe-area-inset-top));
+    padding: 20px;
     overflow-y: auto;
     color: #fff;
     -webkit-overflow-scrolling: touch;
     }
 
     @media (min-width: 768px) {
-    #instructionsScreen {
-    padding: 30px;
-    }
+        #instructionsScreen {
+            padding: 30px;
+        }
     }
 
     #instructionsScreen h1 {
-    font-size: 22px;
-    margin-bottom: 12px;
+    font-size: 24px;
+    margin-bottom: 15px;
     color: #f39c12;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     @media (min-width: 768px) {
-    #instructionsScreen h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    }
+        #instructionsScreen h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
     }
 
     .instructions {
     max-width: 800px;
     background: rgba(255,255,255,0.1);
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    font-size: 11px;
-    line-height: 1.4;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    line-height: 1.5;
     }
 
     @media (min-width: 768px) {
-    .instructions {
-    padding: 20px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    line-height: 1.6;
-    }
+        .instructions {
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
     }
 
     .instructions h3 {
     color: #3498db;
-    margin-top: 10px;
-    margin-bottom: 6px;
-    font-size: 13px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    font-size: 14px;
     }
 
     @media (min-width: 768px) {
-    .instructions h3 {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    }
+        .instructions h3 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
     }
 
     .instructions ul {
-    margin: 6px 0;
-    padding-left: 16px;
+    margin: 8px 0;
+    padding-left: 18px;
     }
 
     @media (min-width: 768px) {
-    .instructions ul {
-    margin: 10px 0;
-    padding-left: 20px;
-    }
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
     }
 
     .instructions li {
-    margin: 3px 0;
+    margin: 4px 0;
     }
 
     @media (min-width: 768px) {
-    .instructions li {
-    margin: 5px 0;
-    }
+        .instructions li {
+            margin: 5px 0;
+        }
     }
 
     .back-btn {
     padding: 12px 30px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     border: none;
     border-radius: 10px;
@@ -774,18 +744,16 @@
     color: #fff;
     transition: all 0.2s ease;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    margin-top: 6px;
-    margin-bottom: 10px;
+    margin-top: 8px;
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    .back-btn {
-    padding: 15px 40px;
-    font-size: 18px;
-    margin-top: 10px;
-    }
+        .back-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
     }
 
     .back-btn:active {
@@ -806,56 +774,54 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     #difficultyScreen h2 {
-    font-size: 22px;
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 25px;
     color: #e74c3c;
     }
 
     @media (min-width: 768px) {
-    #difficultyScreen h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
-    }
+        #difficultyScreen h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
     }
 
     .difficulty-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 25px;
     }
 
     @media (min-width: 768px) {
-    .difficulty-buttons {
-    gap: 15px;
-    margin-bottom: 30px;
-    }
+        .difficulty-buttons {
+            gap: 15px;
+            margin-bottom: 30px;
+        }
     }
 
     .difficulty-btn {
     padding: 12px 25px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
     color: #fff;
-    min-width: 200px;
+    min-width: 220px;
     touch-action: manipulation;
-    min-height: 44px;
     }
 
     @media (min-width: 768px) {
-    .difficulty-btn {
-    padding: 15px 30px;
-    font-size: 18px;
-    min-width: 250px;
-    }
+        .difficulty-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            min-width: 250px;
+        }
     }
 
     .difficulty-btn:active {
@@ -888,13 +854,13 @@
 <body>
     <div id="gameContainer">
     <!-- Main Menu -->
-    <div id="mainMenu">
-    <h1>⚔️ ELEMENTAL BATTLE ARENA ⚔️</h1>
-    <div class="menu-buttons">
-    <button class="menu-btn menu-play" id="playBtn">🎮 PLAY</button>
-    <button class="menu-btn menu-instructions" id="instructionsBtn">📖 INSTRUCTIONS</button>
-    </div>
-    </div>
+<div id="mainMenu" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('images/bg_home_battleground.png'); background-size: cover; background-position: center;">
+<img src="images/ui_title_logo.png" alt="Elemental Battle Arena" style="width: 90%; max-width: 380px; margin-bottom: 40px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.8));">
+<div class="menu-buttons">
+<img src="images/ui_button_play.png" alt="Play" id="playBtn" style="width: 90%; max-width: 320px; cursor: pointer; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.7)); transition: transform 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+<img src="images/ui_button_instructions.png" alt="Instructions" id="instructionsBtn" style="width: 90%; max-width: 320px; cursor: pointer; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.7)); transition: transform 0.2s; margin-top: 20px;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+</div>
+</div>
 
     <!-- Instructions Screen -->
     <div id="instructionsScreen" class="hidden">
@@ -1024,15 +990,15 @@
     <div id="levelChoices" class="button-container hidden">
     <button class="level-btn level-1" id="level1Btn" data-level="1">
     <div id="level1Name">Level 1</div>
-    <div style="font-size: 10px;">20 DMG</div>
+    <div style="font-size: 11px;">20 DMG</div>
     </button>
     <button class="level-btn level-2" id="level2Btn" data-level="2">
     <div id="level2Name">Level 2</div>
-    <div style="font-size: 10px;">40 DMG</div>
+    <div style="font-size: 11px;">40 DMG</div>
     </button>
     <button class="level-btn level-3" id="level3Btn" data-level="3">
     <div id="level3Name">Level 3</div>
-    <div style="font-size: 10px;">60 DMG</div>
+    <div style="font-size: 11px;">60 DMG</div>
     </button>
     </div>
 
@@ -1081,9 +1047,9 @@
     document.getElementById('backFromDifficulty').addEventListener('click', showMainMenu);
 
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-    startGame(this.dataset.difficulty);
-    });
+        btn.addEventListener('click', function() {
+            startGame(this.dataset.difficulty);
+        });
     });
 
     document.getElementById('attackBtn').addEventListener('click', () => selectAction('attack'));
@@ -1092,15 +1058,15 @@
     document.getElementById('saveEnergyBtn').addEventListener('click', () => selectAction('saveEnergy'));
 
     document.querySelectorAll('.element-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-    selectElement(this.dataset.element);
-    });
+        btn.addEventListener('click', function() {
+            selectElement(this.dataset.element);
+        });
     });
 
     document.querySelectorAll('.level-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-    selectLevel(parseInt(this.dataset.level));
-    });
+        btn.addEventListener('click', function() {
+            selectLevel(parseInt(this.dataset.level));
+        });
     });
 
     document.getElementById('backFromElement').addEventListener('click', backToActionSelection);
@@ -1771,11 +1737,11 @@
     attack.textContent = elementEmojis[element];
 
     if (isPlayer) {
-    attack.style.left = '150px';
+    attack.style.left = '200px';
     } else {
-    attack.style.right = '150px';
+    attack.style.right = '200px';
     }
-    attack.style.bottom = '100px';
+    attack.style.bottom = '120px';
 
     battleField.appendChild(attack);
 
