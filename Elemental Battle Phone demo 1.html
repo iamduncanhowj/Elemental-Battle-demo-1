@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Elemental Battle Arena</title>
+    <style>
+    * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    }
+
+    #gameContainer {
+    width: 100vw;
+    height: 100vh;
+    max-width: 900px;
+    max-height: 700px;
+    background: #fff;
+    border-radius: 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+        #gameContainer {
+            border-radius: 20px;
+            width: 90vw;
+            height: 90vh;
+        }
+    }
+
+    #battleField {
+    width: 100%;
+    flex: 1;
+    background: linear-gradient(to bottom, #87ceeb 0%, #98d8c8 100%);
+    position: relative;
+    border-bottom: 4px solid #333;
+    min-height: 250px;
+    }
+
+    .character {
+    position: absolute;
+    bottom: 20px;
+    width: 120px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+
+    @media (min-width: 768px) {
+        .character {
+            width: 150px;
+            height: 200px;
+            bottom: 50px;
+        }
+    }
+
+    #opponent {
+    right: 10px;
+    }
+
+    @media (min-width: 768px) {
+        #opponent {
+            right: 100px;
+        }
+    }
+
+    #player {
+    left: 10px;
+    }
+
+    @media (min-width: 768px) {
+        #player {
+            left: 100px;
+        }
+    }
+
+    .character-sprite {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    @media (min-width: 768px) {
+        .character-sprite {
+            width: 120px;
+            height: 120px;
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+    }
+
+    #opponent .character-sprite {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    #player .character-sprite {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .health-bar-container {
+    width: 120px;
+    height: 16px;
+    background: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    }
+
+    @media (min-width: 768px) {
+        .health-bar-container {
+            width: 150px;
+            height: 20px;
+            border-radius: 10px;
+        }
+    }
+
+    .health-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b 0%, #ee5a6f 100%);
+    transition: width 0.5s ease;
+    }
+
+    .health-text {
+    color: #fff;
+    font-weight: bold;
+    margin-top: 4px;
+    font-size: 11px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    @media (min-width: 768px) {
+        .health-text {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    }
+
+    .energy-display {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+    }
+
+    @media (min-width: 768px) {
+        .energy-display {
+            gap: 8px;
+            margin-top: 8px;
+        }
+    }
+
+    .energy-orb {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    @media (min-width: 768px) {
+        .energy-orb {
+            width: 40px;
+            height: 40px;
+            font-size: 12px;
+        }
+    }
+
+    .fire-orb {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+    }
+
+    .water-orb {
+    background: linear-gradient(135deg, #4facfe 0%, #00a8ff 100%);
+    }
+
+    .nature-orb {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    }
+
+    #controlPanel {
+    flex-shrink: 0;
+    background: #2c3e50;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    max-height: 50vh;
+    }
+
+    @media (min-width: 768px) {
+        #controlPanel {
+            padding: 20px;
+            max-height: 300px;
+        }
+    }
+
+    #actionLog {
+    width: 100%;
+    max-height: 60px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.4;
+    }
+
+    @media (min-width: 768px) {
+        #actionLog {
+            max-height: 80px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    }
+
+    .log-entry {
+    margin-bottom: 3px;
+    padding: 2px 0;
+    }
+
+    @media (min-width: 768px) {
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+    }
+
+    .log-round {
+    font-weight: bold;
+    color: #f39c12;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 3px;
+    margin-top: 3px;
+    }
+
+    @media (min-width: 768px) {
+        .log-round {
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+    }
+
+    #message {
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+    min-height: 25px;
+    line-height: 1.3;
+    }
+
+    @media (min-width: 768px) {
+        #message {
+            font-size: 16px;
+            margin-bottom: 10px;
+            min-height: 30px;
+            line-height: 1.4;
+        }
+    }
+
+    .button-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 5px;
+    }
+
+    @media (min-width: 768px) {
+        .button-container {
+            gap: 10px;
+        }
+    }
+
+    .action-btn {
+    padding: 10px 15px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    color: #fff;
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        .action-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    }
+
+    .action-btn:active:not(:disabled) {
+    transform: scale(0.95);
+    }
+
+    .action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    }
+
+    #attackBtn {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    #guardBtn {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    }
+
+    #parryBtn {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    }
+
+    #saveEnergyBtn {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    }
+
+    .element-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 12px;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        .element-btn {
+            width: 90px;
+            height: 90px;
+            border-radius: 15px;
+            font-size: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    }
+
+    .element-btn:active:not(:disabled) {
+    transform: scale(0.95);
+    }
+
+    .element-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    }
+
+    #fireBtn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+    }
+
+    #waterBtn {
+    background: linear-gradient(135deg, #4facfe 0%, #00a8ff 100%);
+    }
+
+    #natureBtn {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    }
+
+    .element-label {
+    font-size: 9px;
+    margin-top: 3px;
+    }
+
+    @media (min-width: 768px) {
+        .element-label {
+            font-size: 11px;
+            margin-top: 5px;
+        }
+    }
+
+    .level-btn {
+    padding: 8px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    color: #fff;
+    min-width: 100px;
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        .level-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            min-width: 130px;
+        }
+    }
+
+    .level-btn:active:not(:disabled) {
+    transform: scale(0.95);
+    }
+
+    .level-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    }
+
+    .level-1 {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    }
+
+    .level-2 {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    }
+
+    .level-3 {
+    background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);
+    }
+
+    #score {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 10;
+    }
+
+    @media (min-width: 768px) {
+        #score {
+            top: 20px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+    }
+
+    .attack-animation {
+    position: absolute;
+    font-size: 50px;
+    animation: attack 1s ease-out;
+    pointer-events: none;
+    }
+
+    @media (min-width: 768px) {
+        .attack-animation {
+            font-size: 80px;
+        }
+    }
+
+    @keyframes attack {
+    0% {
+    opacity: 1;
+    transform: scale(0.5);
+    }
+    50% {
+    opacity: 1;
+    transform: scale(1.2);
+    }
+    100% {
+    opacity: 0;
+    transform: scale(1);
+    }
+    }
+
+    .shake {
+    animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+    }
+
+    #restartBtn {
+    margin-top: 8px;
+    padding: 8px 25px;
+    font-size: 14px;
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: none;
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        #restartBtn {
+            margin-top: 10px;
+            padding: 10px 30px;
+            font-size: 16px;
+        }
+    }
+
+    #restartBtn:active {
+    background: #2ecc71;
+    transform: scale(0.95);
+    }
+
+    .hidden {
+    display: none !important;
+    }
+
+    /* Main Menu Styles */
+    #mainMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(44,62,80,0.95));
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    }
+
+    #mainMenu h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #f39c12;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+    animation: titleGlow 2s infinite alternate;
+    padding: 0 20px;
+    text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        #mainMenu h1 {
+            font-size: 48px;
+            margin-bottom: 40px;
+        }
+    }
+
+    @keyframes titleGlow {
+    from { text-shadow: 3px 3px 6px rgba(0,0,0,0.7), 0 0 20px rgba(243,156,18,0.3); }
+    to { text-shadow: 3px 3px 6px rgba(0,0,0,0.7), 0 0 40px rgba(243,156,18,0.6); }
+    }
+
+    .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    }
+
+    @media (min-width: 768px) {
+        .menu-buttons {
+            gap: 20px;
+        }
+    }
+
+    .menu-btn {
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #fff;
+    min-width: 250px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        .menu-btn {
+            padding: 20px 60px;
+            font-size: 24px;
+            min-width: 300px;
+        }
+    }
+
+    .menu-btn:active {
+    transform: scale(0.95);
+    }
+
+    .menu-play {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    .menu-instructions {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    }
+
+    /* Instructions Screen Styles */
+    #instructionsScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    overflow-y: auto;
+    color: #fff;
+    -webkit-overflow-scrolling: touch;
+    }
+
+    @media (min-width: 768px) {
+        #instructionsScreen {
+            padding: 30px;
+        }
+    }
+
+    #instructionsScreen h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #f39c12;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    @media (min-width: 768px) {
+        #instructionsScreen h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+    }
+
+    .instructions {
+    max-width: 800px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    line-height: 1.5;
+    }
+
+    @media (min-width: 768px) {
+        .instructions {
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    }
+
+    .instructions h3 {
+    color: #3498db;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    }
+
+    @media (min-width: 768px) {
+        .instructions h3 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+    }
+
+    .instructions ul {
+    margin: 8px 0;
+    padding-left: 18px;
+    }
+
+    @media (min-width: 768px) {
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+    }
+
+    .instructions li {
+    margin: 4px 0;
+    }
+
+    @media (min-width: 768px) {
+        .instructions li {
+            margin: 5px 0;
+        }
+    }
+
+    .back-btn {
+    padding: 12px 30px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    color: #fff;
+    transition: all 0.2s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    margin-top: 8px;
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        .back-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    }
+
+    .back-btn:active {
+    transform: scale(0.95);
+    }
+
+    /* Difficulty Selection Screen */
+    #difficultyScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    }
+
+    #difficultyScreen h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #e74c3c;
+    }
+
+    @media (min-width: 768px) {
+        #difficultyScreen h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+    }
+
+    .difficulty-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+    }
+
+    @media (min-width: 768px) {
+        .difficulty-buttons {
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+    }
+
+    .difficulty-btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #fff;
+    min-width: 220px;
+    touch-action: manipulation;
+    }
+
+    @media (min-width: 768px) {
+        .difficulty-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            min-width: 250px;
+        }
+    }
+
+    .difficulty-btn:active {
+    transform: scale(0.95);
+    }
+
+    .difficulty-easy {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    }
+
+    .difficulty-medium {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    }
+
+    .difficulty-hard {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    .difficulty-impossible {
+    background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);
+    animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(142, 68, 173, 0.5); }
+    50% { box-shadow: 0 0 40px rgba(142, 68, 173, 0.8); }
+    }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+    <!-- Main Menu -->
+    <div id="mainMenu">
+    <h1>⚔️ ELEMENTAL BATTLE ARENA ⚔️</h1>
+    <div class="menu-buttons">
+    <button class="menu-btn menu-play" id="playBtn">🎮 PLAY</button>
+    <button class="menu-btn menu-instructions" id="instructionsBtn">📖 INSTRUCTIONS</button>
+    </div>
+    </div>
+
+    <!-- Instructions Screen -->
+    <div id="instructionsScreen" class="hidden">
+    <h1>📖 HOW TO PLAY</h1>
+
+    <div class="instructions">
+    <h3>🎮 OBJECTIVE</h3>
+    <p>Battle against your opponent using elemental powers! Reduce their HP to 0 to win. Manage your energy and choose your actions wisely.</p>
+
+    <h3>🔥💧🌿 ELEMENTS</h3>
+    <ul>
+    <li><strong>Fire 🔥 beats Nature 🌿</strong></li>
+    <li><strong>Nature 🌿 beats Water 💧</strong></li>
+    <li><strong>Water 💧 beats Fire 🔥</strong></li>
+    </ul>
+
+    <h3>⚡ ACTIONS</h3>
+    <ul>
+    <li><strong>⚔️ ATTACK:</strong> Spend energy to attack with an element. Choose level 1 (20 dmg), 2 (40 dmg), or 3 (60 dmg).</li>
+    <li><strong>🛡️ GUARD:</strong> Reduce ALL incoming damage by 20. Safe and reliable!</li>
+    <li><strong>🎯 PARRY:</strong> Choose an element to counter. If correct, reflect half damage back! If wrong, take full damage.</li>
+    <li><strong>⚡ SAVE ENERGY:</strong> Gain 1 energy of chosen element to power future attacks.</li>
+    </ul>
+
+    <h3>💥 CLASH RULES (When Both Attack)</h3>
+    <p><strong>Same Element:</strong></p>
+    <ul>
+    <li>Same level → Both attacks cancel, no damage</li>
+    <li>Different level → Higher level deals full damage, lower is canceled</li>
+    </ul>
+    <p><strong>Different Elements:</strong></p>
+    <ul>
+    <li>Element advantage always matters!</li>
+    <li>Winner has higher/equal level → Full damage, loser's attack canceled</li>
+    <li>Winner has lower level → Half damage, loser's attack canceled</li>
+    <li>Example: Fire L2 vs Nature L1 → Fire wins (advantage + higher level) → 40 damage</li>
+    <li>Example: Fire L1 vs Nature L2 → Fire wins (advantage but lower level) → 10 damage</li>
+    </ul>
+
+    <h3>🎯 STRATEGY TIPS</h3>
+    <ul>
+    <li>Save energy early to build up powerful attacks</li>
+    <li>Use Guard when low on HP for guaranteed damage reduction</li>
+    <li>Parry is risky but can turn the tide if you predict correctly</li>
+    <li>Watch your opponent's energy to predict their next move</li>
+    <li>Element advantage matters even with different levels!</li>
+    <li>Higher level attacks are safer in clashes</li>
+    </ul>
+    </div>
+
+    <button class="back-btn" id="backFromInstructions">← BACK TO MENU</button>
+    </div>
+
+    <!-- Difficulty Selection Screen -->
+    <div id="difficultyScreen" class="hidden">
+    <h2>SELECT DIFFICULTY</h2>
+    <div class="difficulty-buttons">
+    <button class="difficulty-btn difficulty-easy" data-difficulty="easy">😊 EASY</button>
+    <button class="difficulty-btn difficulty-medium" data-difficulty="medium">😐 MEDIUM</button>
+    <button class="difficulty-btn difficulty-hard" data-difficulty="hard">😠 HARD</button>
+    <button class="difficulty-btn difficulty-impossible" data-difficulty="impossible">💀 IMPOSSIBLE</button>
+    </div>
+    <button class="back-btn" id="backFromDifficulty">← BACK TO MENU</button>
+    </div>
+
+    <div id="battleField">
+    <div id="score">
+    <span>ROUND: <span id="roundNumber">1</span></span>
+    </div>
+
+    <div id="opponent" class="character">
+    <div class="health-bar-container">
+    <div class="health-bar" id="opponentHealth" style="width: 100%;"></div>
+    </div>
+    <div class="health-text">HP: <span id="opponentHP">100</span>/100</div>
+    <div class="character-sprite">😈</div>
+    <div class="energy-display">
+    <div class="energy-orb fire-orb"><span id="oppFireEnergy">0</span></div>
+    <div class="energy-orb water-orb"><span id="oppWaterEnergy">0</span></div>
+    <div class="energy-orb nature-orb"><span id="oppNatureEnergy">0</span></div>
+    </div>
+    </div>
+
+    <div id="player" class="character">
+    <div class="character-sprite">😊</div>
+    <div class="health-bar-container">
+    <div class="health-bar" id="playerHealth" style="width: 100%;"></div>
+    </div>
+    <div class="health-text">HP: <span id="playerHP">100</span>/100</div>
+    <div class="energy-display">
+    <div class="energy-orb fire-orb"><span id="playerFireEnergy">0</span></div>
+    <div class="energy-orb water-orb"><span id="playerWaterEnergy">0</span></div>
+    <div class="energy-orb nature-orb"><span id="playerNatureEnergy">0</span></div>
+    </div>
+    </div>
+    </div>
+
+    <div id="controlPanel">
+    <div id="actionLog"></div>
+
+    <div id="message">Choose your action!</div>
+
+    <div id="actionButtons" class="button-container">
+    <button class="action-btn" id="attackBtn">⚔️ ATTACK</button>
+    <button class="action-btn" id="guardBtn">🛡️ GUARD</button>
+    <button class="action-btn" id="parryBtn">🎯 PARRY</button>
+    <button class="action-btn" id="saveEnergyBtn">⚡ SAVE ENERGY</button>
+    </div>
+
+    <div id="elementChoices" class="button-container hidden">
+    <button class="element-btn" id="fireBtn" data-element="fire">
+    🔥
+    <span class="element-label">FIRE</span>
+    </button>
+    <button class="element-btn" id="waterBtn" data-element="water">
+    💧
+    <span class="element-label">WATER</span>
+    </button>
+    <button class="element-btn" id="natureBtn" data-element="nature">
+    🌿
+    <span class="element-label">NATURE</span>
+    </button>
+    </div>
+
+    <button id="backFromElement" class="back-btn hidden">← BACK</button>
+
+    <div id="levelChoices" class="button-container hidden">
+    <button class="level-btn level-1" id="level1Btn" data-level="1">
+    <div id="level1Name">Level 1</div>
+    <div style="font-size: 11px;">20 DMG</div>
+    </button>
+    <button class="level-btn level-2" id="level2Btn" data-level="2">
+    <div id="level2Name">Level 2</div>
+    <div style="font-size: 11px;">40 DMG</div>
+    </button>
+    <button class="level-btn level-3" id="level3Btn" data-level="3">
+    <div id="level3Name">Level 3</div>
+    <div style="font-size: 11px;">60 DMG</div>
+    </button>
+    </div>
+
+    <button id="backFromLevel" class="back-btn hidden">← BACK</button>
+
+    <button id="restartBtn">Play Again</button>
+    </div>
+    </div>
+
+    <script>
+    let playerHP = 100;
+    let opponentHP = 100;
+    let roundNumber = 1;
+    let gameActive = false;
+    let difficulty = 'medium';
+
+    let playerEnergy = { fire: 0, water: 0, nature: 0 };
+    let opponentEnergy = { fire: 0, water: 0, nature: 0 };
+
+    let playerAction = null;
+    let playerElement = null;
+    let playerLevel = null;
+
+    const elementEmojis = {
+    fire: '🔥',
+    water: '💧',
+    nature: '🌿'
+    };
+
+    const attackNames = {
+    fire: ['Ignite', 'Fireball', 'Explosion'],
+    water: ['Water Gun', 'Water Cannon', 'Rain Blade'],
+    nature: ['Plant Cage', 'Spikes', 'Forest Apocalypse']
+    };
+
+    const beats = {
+    fire: 'nature',
+    nature: 'water',
+    water: 'fire'
+    };
+
+    // Event Listeners
+    document.getElementById('playBtn').addEventListener('click', showDifficultyScreen);
+    document.getElementById('instructionsBtn').addEventListener('click', showInstructions);
+    document.getElementById('backFromInstructions').addEventListener('click', showMainMenu);
+    document.getElementById('backFromDifficulty').addEventListener('click', showMainMenu);
+
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            startGame(this.dataset.difficulty);
+        });
+    });
+
+    document.getElementById('attackBtn').addEventListener('click', () => selectAction('attack'));
+    document.getElementById('guardBtn').addEventListener('click', () => selectAction('guard'));
+    document.getElementById('parryBtn').addEventListener('click', () => selectAction('parry'));
+    document.getElementById('saveEnergyBtn').addEventListener('click', () => selectAction('saveEnergy'));
+
+    document.querySelectorAll('.element-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            selectElement(this.dataset.element);
+        });
+    });
+
+    document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            selectLevel(parseInt(this.dataset.level));
+        });
+    });
+
+    document.getElementById('backFromElement').addEventListener('click', backToActionSelection);
+    document.getElementById('backFromLevel').addEventListener('click', backToElementSelection);
+    document.getElementById('restartBtn').addEventListener('click', restartGame);
+
+    function showMainMenu() {
+    document.getElementById('mainMenu').classList.remove('hidden');
+    document.getElementById('instructionsScreen').classList.add('hidden');
+    document.getElementById('difficultyScreen').classList.add('hidden');
+    }
+
+    function showInstructions() {
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('instructionsScreen').classList.remove('hidden');
+    }
+
+    function showDifficultyScreen() {
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('difficultyScreen').classList.remove('hidden');
+    }
+
+    function startGame(selectedDifficulty) {
+    difficulty = selectedDifficulty;
+    document.getElementById('difficultyScreen').classList.add('hidden');
+    gameActive = true;
+    addToLog(`Game started on ${difficulty.toUpperCase()} difficulty!`, true);
+    }
+
+    function addToLog(message, isRoundStart = false) {
+    const log = document.getElementById('actionLog');
+    const entry = document.createElement('div');
+    entry.className = isRoundStart ? 'log-entry log-round' : 'log-entry';
+    entry.textContent = message;
+    log.appendChild(entry);
+    log.scrollTop = log.scrollHeight;
+    }
+
+    function backToActionSelection() {
+    playerElement = null;
+    playerLevel = null;
+
+    document.getElementById('elementChoices').classList.add('hidden');
+    document.getElementById('levelChoices').classList.add('hidden');
+    document.getElementById('backFromElement').classList.add('hidden');
+    document.getElementById('backFromLevel').classList.add('hidden');
+
+    document.getElementById('actionButtons').classList.remove('hidden');
+    document.getElementById('message').textContent = 'Choose your action!';
+    document.getElementById('message').style.color = '#fff';
+
+    playerAction = null;
+    }
+
+    function backToElementSelection() {
+    playerLevel = null;
+
+    document.getElementById('levelChoices').classList.add('hidden');
+    document.getElementById('backFromLevel').classList.add('hidden');
+
+    document.getElementById('elementChoices').classList.remove('hidden');
+    document.getElementById('backFromElement').classList.remove('hidden');
+    document.getElementById('message').textContent = 'Choose element to attack with:';
+    document.getElementById('message').style.color = '#fff';
+    }
+
+    function selectAction(action) {
+    if (!gameActive) return;
+
+    playerAction = action;
+
+    if (action === 'attack') {
+    if (playerEnergy.fire === 0 && playerEnergy.water === 0 && playerEnergy.nature === 0) {
+    document.getElementById('message').textContent = '❌ No energy to attack! Save energy first!';
+    document.getElementById('message').style.color = '#e74c3c';
+    playerAction = null;
+    return;
+    }
+    document.getElementById('message').textContent = 'Choose element to attack with:';
+    document.getElementById('message').style.color = '#fff';
+    showElementChoices();
+
+    document.getElementById('fireBtn').disabled = playerEnergy.fire === 0;
+    document.getElementById('waterBtn').disabled = playerEnergy.water === 0;
+    document.getElementById('natureBtn').disabled = playerEnergy.nature === 0;
+    } else if (action === 'saveEnergy') {
+    document.getElementById('message').textContent = 'Choose element to save:';
+    showElementChoices();
+
+    document.getElementById('fireBtn').disabled = false;
+    document.getElementById('waterBtn').disabled = false;
+    document.getElementById('natureBtn').disabled = false;
+    } else if (action === 'parry') {
+    document.getElementById('message').textContent = 'Choose element to parry:';
+    showElementChoices();
+
+    document.getElementById('fireBtn').disabled = false;
+    document.getElementById('waterBtn').disabled = false;
+    document.getElementById('natureBtn').disabled = false;
+    } else if (action === 'guard') {
+    hideActionButtons();
+    executeRound();
+    }
+    }
+
+    function showElementChoices() {
+    document.getElementById('actionButtons').classList.add('hidden');
+    document.getElementById('elementChoices').classList.remove('hidden');
+    document.getElementById('backFromElement').classList.remove('hidden');
+    }
+
+    function hideElementChoices() {
+    document.getElementById('elementChoices').classList.add('hidden');
+    document.getElementById('backFromElement').classList.add('hidden');
+    }
+
+    function hideActionButtons() {
+    document.getElementById('actionButtons').classList.add('hidden');
+    }
+
+    function selectElement(element) {
+    playerElement = element;
+
+    if (playerAction === 'attack') {
+    document.getElementById('message').textContent = `Choose ${element} attack level:`;
+    hideElementChoices();
+    showLevelChoices(element);
+    } else {
+    hideElementChoices();
+    executeRound();
+    }
+    }
+
+    function showLevelChoices(element) {
+    const maxLevel = playerEnergy[element];
+
+    document.getElementById('level1Name').textContent = attackNames[element][0];
+    document.getElementById('level2Name').textContent = attackNames[element][1];
+    document.getElementById('level3Name').textContent = attackNames[element][2];
+
+    document.getElementById('level1Btn').disabled = maxLevel < 1;
+    document.getElementById('level2Btn').disabled = maxLevel < 2;
+    document.getElementById('level3Btn').disabled = maxLevel < 3;
+
+    document.getElementById('levelChoices').classList.remove('hidden');
+    document.getElementById('backFromLevel').classList.remove('hidden');
+    }
+
+    function hideLevelChoices() {
+    document.getElementById('levelChoices').classList.add('hidden');
+    document.getElementById('backFromLevel').classList.add('hidden');
+    }
+
+    function selectLevel(level) {
+    playerLevel = level;
+    hideLevelChoices();
+    executeRound();
+    }
+
+    function executeRound() {
+    disableAllButtons(true);
+
+    const opponentDecision = makeOpponentDecision();
+
+    setTimeout(() => {
+    processRound(opponentDecision);
+
+    setTimeout(() => {
+    if (gameActive) {
+    resetForNextRound();
+    }
+    }, 1000);
+    }, 500);
+    }
+
+    function makeOpponentDecision() {
+    const elements = ['fire', 'water', 'nature'];
+
+    const playerHasEnergy = playerEnergy.fire > 0 || playerEnergy.water > 0 || playerEnergy.nature > 0;
+    const playerThreats = [];
+    if (playerEnergy.fire > 0) playerThreats.push('fire');
+    if (playerEnergy.water > 0) playerThreats.push('water');
+    if (playerEnergy.nature > 0) playerThreats.push('nature');
+
+    const opponentHasEnergy = opponentEnergy.fire > 0 || opponentEnergy.water > 0 || opponentEnergy.nature > 0;
+
+    let action, element = null, level = null;
+
+    let attackChance, parryChance, guardChance, saveChance;
+    let smartElementChoice = true;
+    let smartLevelChoice = true;
+    let perfectPrediction = false;
+
+    switch(difficulty) {
+    case 'easy':
+    attackChance = 0.3;
+    parryChance = 0.1;
+    guardChance = 0.2;
+    saveChance = 0.4;
+    smartElementChoice = false;
+    smartLevelChoice = false;
+    break;
+    case 'medium':
+    attackChance = 0.4;
+    parryChance = 0.15;
+    guardChance = 0.2;
+    saveChance = 0.25;
+    smartElementChoice = Math.random() < 0.5;
+    smartLevelChoice = Math.random() < 0.5;
+    break;
+    case 'hard':
+    attackChance = 0.45;
+    parryChance = 0.25;
+    guardChance = 0.15;
+    saveChance = 0.15;
+    smartElementChoice = Math.random() < 0.8;
+    smartLevelChoice = Math.random() < 0.8;
+    break;
+    case 'impossible':
+    attackChance = 0.5;
+    parryChance = 0.35;
+    guardChance = 0.05;
+    saveChance = 0.1;
+    smartElementChoice = true;
+    smartLevelChoice = true;
+    perfectPrediction = true;
+    break;
+    }
+
+    const rand = Math.random();
+
+    if (opponentHasEnergy && playerHasEnergy) {
+    if (difficulty === 'impossible') {
+    guardChance = 0;
+    const remaining = 1 - attackChance - parryChance - saveChance;
+    attackChance += remaining * 0.6;
+    parryChance += remaining * 0.4;
+    }
+
+    if (rand < attackChance) {
+    action = 'attack';
+    const availableElements = elements.filter(e => opponentEnergy[e] > 0);
+
+    if (smartElementChoice && playerThreats.length > 0) {
+    const counterElements = playerThreats.map(threat => {
+    for (let key in beats) {
+    if (beats[key] === threat) return key;
+    }
+    return null;
+    }).filter(e => e && opponentEnergy[e] > 0);
+
+    if (counterElements.length > 0) {
+    element = counterElements.reduce((a, b) => opponentEnergy[a] > opponentEnergy[b] ? a : b);
+    } else {
+    element = availableElements[Math.floor(Math.random() * availableElements.length)];
+    }
+    } else {
+    element = availableElements[Math.floor(Math.random() * availableElements.length)];
+    }
+
+    if (smartLevelChoice) {
+    const maxPlayerEnergy = Math.max(playerEnergy.fire, playerEnergy.water, playerEnergy.nature);
+    if (perfectPrediction) {
+    level = Math.min(opponentEnergy[element], 3);
+    } else if (maxPlayerEnergy >= 2.5 && opponentEnergy[element] >= 3) {
+    level = 3;
+    } else if (maxPlayerEnergy >= 1.5 && opponentEnergy[element] >= 2) {
+    level = 2;
+    } else {
+    level = Math.min(opponentEnergy[element], Math.floor(Math.random() * 3) + 1);
+    }
+    } else {
+    level = Math.min(opponentEnergy[element], Math.floor(Math.random() * 3) + 1);
+    }
+    } else if (rand < attackChance + parryChance) {
+    action = 'parry';
+    if (smartElementChoice && playerThreats.length > 0) {
+    if (perfectPrediction) {
+    element = playerThreats.reduce((a, b) => playerEnergy[a] > playerEnergy[b] ? a : b);
+    } else {
+    element = playerThreats[Math.floor(Math.random() * playerThreats.length)];
+    }
+    } else {
+    element = elements[Math.floor(Math.random() * 3)];
+    }
+    } else if (rand < attackChance + parryChance + guardChance) {
+    action = 'guard';
+    } else {
+    action = 'saveEnergy';
+    if (smartElementChoice) {
+    if (perfectPrediction) {
+    const playerStrongest = playerThreats.reduce((a, b) => playerEnergy[a] > playerEnergy[b] ? a : b);
+    const counterElement = Object.keys(beats).find(key => beats[key] === playerStrongest);
+    if (counterElement) {
+    element = counterElement;
+    } else {
+    element = elements.reduce((a, b) => opponentEnergy[a] < opponentEnergy[b] ? a : b);
+    }
+    } else {
+    element = elements.reduce((a, b) => opponentEnergy[a] < opponentEnergy[b] ? a : b);
+    }
+    } else {
+    element = elements[Math.floor(Math.random() * 3)];
+    }
+    }
+    } else if (opponentHasEnergy && !playerHasEnergy) {
+    if (rand < 0.85) {
+    action = 'attack';
+    const availableElements = elements.filter(e => opponentEnergy[e] > 0);
+    element = availableElements[Math.floor(Math.random() * availableElements.length)];
+    if (perfectPrediction) {
+    level = Math.min(opponentEnergy[element], 3);
+    } else {
+    level = Math.min(opponentEnergy[element], Math.floor(Math.random() * 3) + 1);
+    }
+    } else {
+    action = 'saveEnergy';
+    if (smartElementChoice) {
+    element = elements.reduce((a, b) => opponentEnergy[a] < opponentEnergy[b] ? a : b);
+    } else {
+    element = elements[Math.floor(Math.random() * 3)];
+    }
+    }
+    } else {
+    if (rand < 0.9) {
+    action = 'saveEnergy';
+    if (smartElementChoice) {
+    element = elements.reduce((a, b) => opponentEnergy[a] < opponentEnergy[b] ? a : b);
+    } else {
+    element = elements[Math.floor(Math.random() * 3)];
+    }
+    } else {
+    action = 'guard';
+    }
+    }
+
+    return { action, element, level };
+    }
+
+    function processRound(opponentDecision) {
+    addToLog(`--- ROUND ${roundNumber} ---`, true);
+
+    let messages = [];
+
+    if (playerAction === 'saveEnergy') {
+    playerEnergy[playerElement]++;
+    const msg = `You saved ${elementEmojis[playerElement]} energy!`;
+    messages.push(msg);
+    addToLog(`YOU: Saved ${elementEmojis[playerElement]} energy`);
+    } else if (playerAction === 'guard') {
+    addToLog(`YOU: Used Guard 🛡️`);
+    } else if (playerAction === 'parry') {
+    addToLog(`YOU: Prepared Parry ${elementEmojis[playerElement]} 🎯`);
+    } else if (playerAction === 'attack') {
+    addToLog(`YOU: ${attackNames[playerElement][playerLevel - 1]} ${elementEmojis[playerElement]} (L${playerLevel})`);
+    }
+
+    if (opponentDecision.action === 'saveEnergy') {
+    opponentEnergy[opponentDecision.element]++;
+    const msg = `Opponent saved ${elementEmojis[opponentDecision.element]} energy!`;
+    messages.push(msg);
+    addToLog(`OPP: Saved ${elementEmojis[opponentDecision.element]} energy`);
+    } else if (opponentDecision.action === 'guard') {
+    addToLog(`OPP: Used Guard 🛡️`);
+    } else if (opponentDecision.action === 'parry') {
+    addToLog(`OPP: Prepared Parry ${elementEmojis[opponentDecision.element]} 🎯`);
+    } else if (opponentDecision.action === 'attack') {
+    addToLog(`OPP: ${attackNames[opponentDecision.element][opponentDecision.level - 1]} ${elementEmojis[opponentDecision.element]} (L${opponentDecision.level})`);
+    }
+
+    if (playerAction === 'attack' && opponentDecision.action === 'attack') {
+    const result = handleBothAttack(opponentDecision);
+    messages.push(...result);
+    result.forEach(msg => addToLog(msg));
+    } else if (playerAction === 'attack') {
+    const result = handlePlayerAttack(opponentDecision);
+    messages.push(...result);
+    result.forEach(msg => addToLog(msg));
+    } else if (opponentDecision.action === 'attack') {
+    const result = handleOpponentAttack(opponentDecision);
+    messages.push(...result);
+    result.forEach(msg => addToLog(msg));
+    }
+
+    if (playerAction === 'guard' && opponentDecision.action !== 'attack') {
+    messages.push(`You guarded but no attack came!`);
+    }
+    if (playerAction === 'parry' && opponentDecision.action !== 'attack') {
+    messages.push(`You prepared to parry ${elementEmojis[playerElement]} but no attack came!`);
+    }
+    if (opponentDecision.action === 'guard' && playerAction !== 'attack') {
+    messages.push(`Opponent guarded but no attack came!`);
+    }
+    if (opponentDecision.action === 'parry' && playerAction !== 'attack') {
+    messages.push(`Opponent prepared to parry ${elementEmojis[opponentDecision.element]} but no attack came!`);
+    }
+
+    updateUI();
+    document.getElementById('message').innerHTML = messages.join('<br>');
+    document.getElementById('message').style.color = '#fff';
+
+    checkGameOver();
+
+    if (gameActive) {
+    roundNumber++;
+    document.getElementById('roundNumber').textContent = roundNumber;
+    }
+    }
+
+    function handlePlayerAttack(opponentDecision) {
+    const messages = [];
+    const baseDamage = calculateDamage(playerLevel);
+    const attackName = attackNames[playerElement][playerLevel - 1];
+
+    messages.push(`You used ${attackName}! ${elementEmojis[playerElement]}`);
+
+    if (opponentDecision.action === 'guard') {
+    const actualDamage = Math.max(0, baseDamage - 20);
+    opponentHP -= actualDamage;
+    messages.push(`Opponent guarded! Damage reduced by 20.`);
+    messages.push(`Dealt ${actualDamage} damage to opponent!`);
+
+    if (actualDamage > 0) {
+    showAttackAnimation(playerElement, true);
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => document.getElementById('opponent').classList.remove('shake'), 500);
+    }
+    } else if (opponentDecision.action === 'parry' && opponentDecision.element === playerElement) {
+    const reflectDamage = Math.floor(baseDamage / 2);
+    playerHP -= reflectDamage;
+    messages.push(`🎯 Perfect parry! Opponent reflects ${reflectDamage} damage back!`);
+
+    showAttackAnimation(playerElement, false);
+    document.getElementById('player').classList.add('shake');
+    setTimeout(() => document.getElementById('player').classList.remove('shake'), 500);
+    } else if (opponentDecision.action === 'parry') {
+    opponentHP -= baseDamage;
+    messages.push(`Opponent's parry failed! Wrong element!`);
+    messages.push(`Dealt ${baseDamage} damage to opponent!`);
+
+    showAttackAnimation(playerElement, true);
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => document.getElementById('opponent').classList.remove('shake'), 500);
+    } else {
+    opponentHP -= baseDamage;
+    messages.push(`Dealt ${baseDamage} damage to opponent!`);
+    showAttackAnimation(playerElement, true);
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => document.getElementById('opponent').classList.remove('shake'), 500);
+    }
+
+    playerEnergy[playerElement] -= playerLevel;
+    return messages;
+    }
+
+    function handleOpponentAttack(opponentDecision) {
+    const messages = [];
+    const baseDamage = calculateDamage(opponentDecision.level);
+    const attackName = attackNames[opponentDecision.element][opponentDecision.level - 1];
+
+    messages.push(`Opponent used ${attackName}! ${elementEmojis[opponentDecision.element]}`);
+
+    if (playerAction === 'guard') {
+    const actualDamage = Math.max(0, baseDamage - 20);
+    playerHP -= actualDamage;
+    messages.push(`You guarded! Damage reduced by 20.`);
+    messages.push(`You took ${actualDamage} damage!`);
+
+    if (actualDamage > 0) {
+    showAttackAnimation(opponentDecision.element, false);
+    document.getElementById('player').classList.add('shake');
+    setTimeout(() => document.getElementById('player').classList.remove('shake'), 500);
+    }
+    } else if (playerAction === 'parry' && playerElement === opponentDecision.element) {
+    const reflectDamage = Math.floor(baseDamage / 2);
+    opponentHP -= reflectDamage;
+    messages.push(`🎯 Perfect parry! You reflect ${reflectDamage} damage back!`);
+
+    showAttackAnimation(opponentDecision.element, true);
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => document.getElementById('opponent').classList.remove('shake'), 500);
+    } else if (playerAction === 'parry') {
+    playerHP -= baseDamage;
+    messages.push(`Your parry failed! Wrong element!`);
+    messages.push(`You took ${baseDamage} damage!`);
+
+    showAttackAnimation(opponentDecision.element, false);
+    document.getElementById('player').classList.add('shake');
+    setTimeout(() => document.getElementById('player').classList.remove('shake'), 500);
+    } else {
+    playerHP -= baseDamage;
+    messages.push(`You took ${baseDamage} damage!`);
+    showAttackAnimation(opponentDecision.element, false);
+    document.getElementById('player').classList.add('shake');
+    setTimeout(() => document.getElementById('player').classList.remove('shake'), 500);
+    }
+
+    opponentEnergy[opponentDecision.element] -= opponentDecision.level;
+    return messages;
+    }
+
+    function handleBothAttack(opponentDecision) {
+    const messages = [];
+    const playerDamage = calculateDamage(playerLevel);
+    const opponentDamage = calculateDamage(opponentDecision.level);
+    const playerAttackName = attackNames[playerElement][playerLevel - 1];
+    const opponentAttackName = attackNames[opponentDecision.element][opponentDecision.level - 1];
+
+    messages.push(`You used ${playerAttackName}! ${elementEmojis[playerElement]}`);
+    messages.push(`Opponent used ${opponentAttackName}! ${elementEmojis[opponentDecision.element]}`);
+
+    const Pe = playerElement;
+    const Pl = playerLevel;
+    const Pd = playerDamage;
+
+    const Oe = opponentDecision.element;
+    const Ol = opponentDecision.level;
+    const Od = opponentDamage;
+
+    if (Pe === Oe) {
+    if (Pl === Ol) {
+    messages.push(`💥 Same element clash! Both attacks cancel!`);
+    } else if (Pl > Ol) {
+    messages.push(`💥 Your higher level ${Pe.toUpperCase()} overwhelms opponent's attack!`);
+    opponentHP -= Pd;
+    messages.push(`Opponent takes ${Pd} damage!`);
+
+    showAttackAnimation(Pe, true);
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => document.getElementById('opponent').classList.remove('shake'), 500);
+    } else {
+    messages.push(`💥 Opponent's higher level ${Oe.toUpperCase()} overwhelms your attack!`);
+    playerHP -= Od;
+    messages.push(`You take ${Od} damage!`);
+
+    showAttackAnimation(Oe, false);
+    document.getElementById('player').classList.add('shake');
+    setTimeout(() => document.getElementById('player').classList.remove('shake'), 500);
+    }
+    } else {
+    const playerBeatsOpp = (beats[Pe] === Oe);
+    const oppBeatsPlayer = (beats[Oe] === Pe);
+
+    if (playerBeatsOpp) {
+    if (Pl >= Ol) {
+    messages.push(`💥 Your ${Pe.toUpperCase()} overpowers ${Oe.toUpperCase()}!`);
+    opponentHP -= Pd;
+    messages.push(`Opponent takes ${Pd} damage!`);
+    } else {
+    const half = Math.floor(Pd / 2);
+    messages.push(`💥 Element advantage, but lower level... you still break through!`);
+    opponentHP -= half;
+    messages.push(`Opponent takes ${half} damage!`);
+    }
+
+    showAttackAnimation(Pe, true);
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => document.getElementById('opponent').classList.remove('shake'), 500);
+
+    } else if (oppBeatsPlayer) {
+    if (Ol >= Pl) {
+    messages.push(`💥 Opponent's ${Oe.toUpperCase()} overpowers your ${Pe.toUpperCase()}!`);
+    playerHP -= Od;
+    messages.push(`You take ${Od} damage!`);
+    } else {
+    const half = Math.floor(Od / 2);
+    messages.push(`💥 Your higher level softens the blow, but element still wins...`);
+    playerHP -= half;
+    messages.push(`You take ${half} damage!`);
+    }
+
+    showAttackAnimation(Oe, false);
+    document.getElementById('player').classList.add('shake');
+    setTimeout(() => document.getElementById('player').classList.remove('shake'), 500);
+
+    } else {
+    messages.push(`💥 Both attacks hit each other! No clear element advantage.`);
+    opponentHP -= Pd;
+    playerHP -= Od;
+    messages.push(`You deal ${Pd} and take ${Od} damage!`);
+
+    showAttackAnimation(Pe, true);
+    showAttackAnimation(Oe, false);
+    document.getElementById('player').classList.add('shake');
+    document.getElementById('opponent').classList.add('shake');
+    setTimeout(() => {
+    document.getElementById('player').classList.remove('shake');
+    document.getElementById('opponent').classList.remove('shake');
+    }, 500);
+    }
+    }
+
+    playerEnergy[Pe] -= Pl;
+    opponentEnergy[Oe] -= Ol;
+
+    return messages;
+    }
+
+    function calculateDamage(level) {
+    const damages = [20, 40, 60];
+    return damages[level - 1];
+    }
+
+    function updateUI() {
+    document.getElementById('playerHP').textContent = Math.max(0, playerHP);
+    document.getElementById('opponentHP').textContent = Math.max(0, opponentHP);
+    document.getElementById('playerHealth').style.width = Math.max(0, playerHP) + '%';
+    document.getElementById('opponentHealth').style.width = Math.max(0, opponentHP) + '%';
+
+    document.getElementById('playerFireEnergy').textContent = playerEnergy.fire;
+    document.getElementById('playerWaterEnergy').textContent = playerEnergy.water;
+    document.getElementById('playerNatureEnergy').textContent = playerEnergy.nature;
+
+    document.getElementById('oppFireEnergy').textContent = opponentEnergy.fire;
+    document.getElementById('oppWaterEnergy').textContent = opponentEnergy.water;
+    document.getElementById('oppNatureEnergy').textContent = opponentEnergy.nature;
+    }
+
+    function checkGameOver() {
+    if (playerHP <= 0) {
+    gameActive = false;
+    document.getElementById('message').textContent = '💀 You Lost! Game Over!';
+    document.getElementById('message').style.color = '#e74c3c';
+    document.getElementById('restartBtn').style.display = 'block';
+    addToLog('💀 GAME OVER - You Lost!');
+    } else if (opponentHP <= 0) {
+    gameActive = false;
+    document.getElementById('message').textContent = '🎉 You Win! Victory!';
+    document.getElementById('message').style.color = '#2ecc71';
+    document.getElementById('restartBtn').style.display = 'block';
+    addToLog('🎉 VICTORY - You Win!');
+    }
+    }
+
+    function disableAllButtons(disabled) {
+    document.getElementById('attackBtn').disabled = disabled;
+    document.getElementById('guardBtn').disabled = disabled;
+    document.getElementById('parryBtn').disabled = disabled;
+    document.getElementById('saveEnergyBtn').disabled = disabled;
+    document.getElementById('fireBtn').disabled = disabled;
+    document.getElementById('waterBtn').disabled = disabled;
+    document.getElementById('natureBtn').disabled = disabled;
+    document.getElementById('level1Btn').disabled = disabled;
+    document.getElementById('level2Btn').disabled = disabled;
+    document.getElementById('level3Btn').disabled = disabled;
+    }
+
+    function resetForNextRound() {
+    playerAction = null;
+    playerElement = null;
+    playerLevel = null;
+
+    document.getElementById('actionButtons').classList.remove('hidden');
+    document.getElementById('elementChoices').classList.add('hidden');
+    document.getElementById('levelChoices').classList.add('hidden');
+    document.getElementById('backFromElement').classList.add('hidden');
+    document.getElementById('backFromLevel').classList.add('hidden');
+    document.getElementById('message').textContent = 'Choose your action!';
+    document.getElementById('message').style.color = '#fff';
+    disableAllButtons(false);
+    }
+
+    function showAttackAnimation(element, isPlayer) {
+    const battleField = document.getElementById('battleField');
+
+    const attack = document.createElement('div');
+    attack.className = 'attack-animation';
+    attack.textContent = elementEmojis[element];
+
+    if (isPlayer) {
+    attack.style.left = '200px';
+    } else {
+    attack.style.right = '200px';
+    }
+    attack.style.bottom = '120px';
+
+    battleField.appendChild(attack);
+
+    setTimeout(() => {
+    attack.remove();
+    }, 1000);
+    }
+
+    function restartGame() {
+    playerHP = 100;
+    opponentHP = 100;
+    roundNumber = 1;
+    gameActive = false;
+    playerEnergy = { fire: 0, water: 0, nature: 0 };
+    opponentEnergy = { fire: 0, water: 0, nature: 0 };
+    playerAction = null;
+    playerElement = null;
+    playerLevel = null;
+
+    document.getElementById('actionLog').innerHTML = '';
+
+    updateUI();
+    document.getElementById('roundNumber').textContent = roundNumber;
+    document.getElementById('message').textContent = 'Choose your action!';
+    document.getElementById('message').style.color = '#fff';
+    document.getElementById('restartBtn').style.display = 'none';
+    document.getElementById('actionButtons').classList.remove('hidden');
+    document.getElementById('elementChoices').classList.add('hidden');
+    document.getElementById('levelChoices').classList.add('hidden');
+    document.getElementById('backFromElement').classList.add('hidden');
+    document.getElementById('backFromLevel').classList.add('hidden');
+    document.getElementById('mainMenu').classList.remove('hidden');
+    disableAllButtons(false);
+    }
+    </script>
+</body>
+</html>
